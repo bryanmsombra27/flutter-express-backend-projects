@@ -46,3 +46,13 @@ export const validateJWT = (req, res, next) => {
     });
   }
 };
+
+export const comprobarJwt = (token) => {
+  try {
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+
+    return [true, id];
+  } catch (error) {
+    return [false, null];
+  }
+};

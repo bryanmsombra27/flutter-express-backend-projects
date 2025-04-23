@@ -22,6 +22,10 @@ app.use(express.static(publicPath));
 
 app.use("/api", userRouter);
 
+// app.listen(process.env.PORT, () => {
+//   console.log(`SERVIDOR CORRIENDO EN PUERTO: ${process.env.PORT}`);
+// });
+
 // CONFIGURANDO SOCKET SERVER CON EXPRESS
 const server = require("http").createServer(app);
 module.exports.io = require("socket.io")(server, {

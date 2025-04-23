@@ -23,6 +23,12 @@ const createUser = async (req, res) => {
       ok: true,
       message: "Usuario creado con exito!",
       token,
+      user: {
+        id: user._id,
+        email: user.email,
+        online: user.online,
+        nombre: user.nombre,
+      },
     });
   } catch (error) {
     console.log(error, "CREATE USER ERROR");
@@ -61,6 +67,12 @@ const login = async (req, res) => {
       ok: true,
       message: "login exitoso",
       token,
+      user: {
+        id: user._id,
+        email: user.email,
+        online: user.online,
+        nombre: user.nombre,
+      },
     });
   } catch (error) {
     console.log(error, "LOGIN ERROR");
@@ -84,7 +96,12 @@ const renewToken = async (req, res) => {
     return res.status(200).send({
       ok: true,
       message: "token renovado",
-      user,
+      user: {
+        id: user._id,
+        email: user.email,
+        online: user.online,
+        nombre: user.nombre,
+      },
       token,
     });
   } catch (error) {
