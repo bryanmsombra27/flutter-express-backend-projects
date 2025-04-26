@@ -1,4 +1,10 @@
-const { createUser, login, renewToken } = require("../controllers/users.cjs");
+const {
+  createUser,
+  login,
+  renewToken,
+  getUsuarios,
+  getMensajes,
+} = require("../controllers/users.cjs");
 const { check } = require("express-validator");
 const { validateFields } = require("../middlewares/validateFields");
 const { validateJWT } = require("../helpers/jwt.mjs");
@@ -33,5 +39,7 @@ router.post(
 );
 
 router.get("/renew", validateJWT, renewToken);
+router.get("/usuarios", validateJWT, getUsuarios);
+router.get("/mensajes/:de", validateJWT, getMensajes);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const { hash, compare } = require("bcryptjs");
 const User = require("../models/User.cjs");
+const Mensaje = require("../models/Message.cjs");
 const { generateJwt } = require("../helpers/jwt.mjs");
 
 const createUser = async (req, res) => {
@@ -112,8 +113,62 @@ const renewToken = async (req, res) => {
   }
 };
 
+const getUsuarios = async (req, res) => {
+  const offset = +req.query.offset || 0;
+
+  const usuarios = await User.find({
+    _id: {
+      $ne: req.id,
+    },
+  })
+
+    .sort("-online")
+    .skip(offset)
+    .limit(20);
+
+  const newUsers = usuarios.map((user) => ({
+    id: user._id,
+    nombre: user.nombre,
+    online: user.online,
+    email: user.email,
+  }));
+
+  console.log(usuarios, "USUARIOS");
+
+  return res.status(200).send({
+    ok: true,
+    usuarios: newUsers,
+  });
+};
+
+const getMensajes = async (req, res) => {
+  const { id } = req;
+  const { de } = req.params;
+
+  console.log(id, "user id");
+  console.log(de, "user A QUIEN VA id");
+
+  const messages = await Mensaje.find({
+    $or: [
+      { de: id, para: de },
+      { de: de, para: id },
+    ],
+  })
+    .sort({
+      createdAt: -1,
+    })
+    .limit(30);
+
+  return res.status(200).send({
+    ok: true,
+    mensajes: messages,
+  });
+};
+
 module.exports = {
   createUser,
   login,
   renewToken,
+  getUsuarios,
+  getMensajes,
 };

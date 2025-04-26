@@ -40,6 +40,8 @@ export const validateJWT = (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error, "error token");
+
     return res.status(401).send({
       ok: false,
       message: "El token no es valido",
